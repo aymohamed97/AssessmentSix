@@ -32,9 +32,10 @@ app.get("/js", (req, res) => {
 app.get('/api/robots', (req, res) => {
     try {
         res.status(200).send(botsArr)
+        rollbar.info('trying to get bots')
     } catch (error) {
         Rollbar.log('ERROR GETTING BOTS', error)
-        // console.log('ERROR GETTING BOTS', error)
+        console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
     }
 })
@@ -45,8 +46,10 @@ app.get('/api/robots/five', (req, res) => {
         let choices = shuffled.slice(0, 5)
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
+        rollbar.info("Getting five bots")
     } catch (error) {
-        // console.log('ERROR GETTING FIVE BOTS', error)
+        console.log('ERROR GETTING FIVE BOTS', error)
+        rollbar.log("error getting five bots")
         res.sendStatus(400)
     }
 })
@@ -89,17 +92,18 @@ app.post('/api/duel', (req, res) => {
 app.get('/api/player', (req, res) => {
     try {
         res.status(200).send(playerRecord)
+        rollbar.info('display player record')
     } catch (error) {
-        Rollbar.log('ERROR GETTING PLAYER STATS', error)
-        // console.log('ERROR GETTING PLAYER STATS', error)
+        // rollbar.log('ERROR GETTING PLAYER STATS', error)
+        console.log('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
+        rollbar.error("players record wasnt displayed")
     }
 })
 
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {
-  Rollbar.log(`Listening on port ${port}`)
-//   console.log(`Listening on port ${port}`)
+  rollbar.log(`Listening on port ${port}`)
+  console.log(`Listening on port ${port}`)
 })
-rsf
